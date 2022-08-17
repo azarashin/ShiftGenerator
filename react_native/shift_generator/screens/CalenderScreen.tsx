@@ -10,7 +10,7 @@ import {ShiftType} from "../components/ShiftType"
 
 const INITIAL_DATE = moment().format("YYYY-MM-DD");
 
-export default function CalenderScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function CalenderScreen() {
   const [selected, setSelected] = useState({});
   const handleDayPress = (day) => {
 
