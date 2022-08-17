@@ -6,6 +6,8 @@ import { RootTabScreenProps } from '../types';
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 
+import {ShiftType} from "../components/ShiftType"
+
 const INITIAL_DATE = moment().format("YYYY-MM-DD");
 
 export default function CalenderScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
@@ -35,6 +37,7 @@ export default function CalenderScreen({ navigation }: RootTabScreenProps<'TabOn
         markedDates={selected }
         onDayPress={handleDayPress}
       />
+      <ShiftType/>
     </View>
   );
 }
