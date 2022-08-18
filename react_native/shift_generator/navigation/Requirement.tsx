@@ -14,9 +14,7 @@
  import useColorScheme from '../hooks/useColorScheme';
  import ModalScreen from '../screens/ModalScreen';
  import NotFoundScreen from '../screens/NotFoundScreen';
- import TabOneScreen from '../screens/TabOneScreen';
- import TabTwoScreen from '../screens/TabTwoScreen';
- import CalenderScreen from '../screens/CalenderScreen';
+ import RequirementScreen from '../screens/RequirementScreen';
  import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
  import LinkingConfiguration from './LinkingConfiguration';
  
@@ -60,64 +58,64 @@
  
    return (
      <BottomTab.Navigator
-       initialRouteName="日"
+       initialRouteName='日'
        screenOptions={{
          tabBarActiveTintColor: Colors[colorScheme].tint,
        }}>
        <BottomTab.Screen
-         name="日"
-         component={TabTwoScreen}
+         name='日曜日'
+         component={RequirementScreen}
          options={{
-           title: '日',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '日曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        <BottomTab.Screen
-         name="月"
-         component={TabTwoScreen}
+         name='月曜日'
+         component={RequirementScreen}
          options={{
-           title: '月',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '月曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        <BottomTab.Screen
-         name="火"
-         component={TabTwoScreen}
+         name='火曜日'
+         component={RequirementScreen}
          options={{
-           title: '火',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '火曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        <BottomTab.Screen
-         name="水"
-         component={TabTwoScreen}
+         name='水曜日'
+         component={RequirementScreen}
          options={{
-           title: '水',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '水曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        <BottomTab.Screen
-         name="木"
-         component={TabTwoScreen}
+         name='木曜日'
+         component={RequirementScreen}
          options={{
-           title: '木',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '木曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        <BottomTab.Screen
-         name="金"
-         component={TabTwoScreen}
+         name='金曜日'
+         component={RequirementScreen}
          options={{
-           title: '金',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '金曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        <BottomTab.Screen
-         name="土"
-         component={TabTwoScreen}
+         name='土曜日'
+         component={RequirementScreen}
          options={{
-           title: '土',
-           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+           title: '土曜日',
+           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
          }}
        />
        
