@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'; 
 import HomeScreen from '../screens/HomeScreen';
 import CalenderScreen from '../screens/CalenderScreen';
-import Requirement from '../navigation/Requirement';
+import StaffListScreen from '../screens/StaffListScreen';
 
 import RequirementScreen from '../screens/RequirementScreen';
 
@@ -14,6 +14,7 @@ export default function Home() {
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName='メニュー画面'>
 				<Stack.Screen name='メニュー画面' component ={HomeScreen} />
+				<Stack.Screen name='従業員一覧' component ={StaffListScreen} />
 				<Stack.Screen name='カレンダー' component ={CalenderScreen} />
 
 
