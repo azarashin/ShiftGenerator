@@ -50,19 +50,21 @@ function ShiftSlider(props: { id: string, slot_name: string})
  
   return (
     <View style={styles.container}>
-      <Text style={styles.slider_text}>
-        [時間帯] {props.slot_name}
-      </Text>
-      <Text style={styles.slider_text}>
-        従業員数: {required}
-      </Text>
-      <Slider style={styles.slider}
-        step={1}
-        maximumValue={5}
-        onValueChange={onChangeValue}
-        onSlidingStart={() => {console.log('onSlidingStart');}}
-        value={required}
-      />
+      <View style={styles.slider_text}>
+        <Text style={styles.slider_text_slot}>
+          [時間帯] {props.slot_name}
+        </Text>
+        <Text style={styles.slider_text_requirement}>
+          従業員数: {required}
+        </Text>
+        <Slider style={styles.slider}
+          step={1}
+          maximumValue={5}
+          onValueChange={onChangeValue}
+          onSlidingStart={() => {console.log('onSlidingStart');}}
+          value={required}
+        />
+      </View>
     </View>
   );
 }
@@ -74,30 +76,33 @@ function WeekSelector() {
 
   return (
     <View>
-      <View style={styles.wook_buttons}>
-        <Button title='日' onPress={() => {navigation.navigate('日曜日');}}/>
-        <Button title='月' onPress={() => {navigation.navigate('月曜日');}}/>
-        <Button title='火' onPress={() => {navigation.navigate('火曜日');}}/>
-        <Button title='水' onPress={() => {navigation.navigate('水曜日');}}/>
-        <Button title='木' onPress={() => {navigation.navigate('木曜日');}}/>
-        <Button title='金' onPress={() => {navigation.navigate('金曜日');}}/>
-        <Button title='土' onPress={() => {navigation.navigate('土曜日');}}/>
+      <View style={styles.work_buttons}>
+        <View style={styles.work_button}><Button title='日' onPress={() => {navigation.navigate('日曜日');}}/></View>
+        <View style={styles.work_button}><Button title='月' onPress={() => {navigation.navigate('月曜日');}}/></View>
+        <View style={styles.work_button}><Button title='火' onPress={() => {navigation.navigate('火曜日');}}/></View>
+        <View style={styles.work_button}><Button title='水' onPress={() => {navigation.navigate('水曜日');}}/></View>
+        <View style={styles.work_button}><Button title='木' onPress={() => {navigation.navigate('木曜日');}}/></View>
+        <View style={styles.work_button}><Button title='金' onPress={() => {navigation.navigate('金曜日');}}/></View>
+        <View style={styles.work_button}><Button title='土' onPress={() => {navigation.navigate('土曜日');}}/></View>
       </View>
-      <View style={styles.wook_buttons}>
-        <Button title='メニュー' onPress={() => {navigation.navigate('メニュー画面');}}/>
-      </View>
+      <Button title='メニュー' onPress={() => {navigation.navigate('メニュー画面');}}/>
     </View>
   );
 }
 
 
 const styles = StyleSheet.create({
-  wook_buttons: {
+  work_buttons: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   }, 
+  work_button: {
+    padding: 5,
+    marginVertical: 8,
+    marginHorizontal: 4,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -117,9 +122,14 @@ const styles = StyleSheet.create({
     height: 20
   },
   slider_text: {
-    fontSize: 14,
-    textAlign: 'center',
+    textAlign: 'left',
     fontWeight: '500',
     margin: 0,
+  },
+  slider_text_slot: {
+    fontSize: 14,
+  },
+  slider_text_requirement: {
+    fontSize: 16,
   },
 });
