@@ -12,6 +12,8 @@ export default function HomeScreen() {
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <Button title="シフト枠の設定" onPress={() => {navigation.navigate('日曜日');}}/>
             <Button title="従業員の希望設定" onPress={() => {navigation.navigate('従業員一覧');}}/>
+            <Button title="シフトを生成する" onPress={() => {navigation.navigate('シフト生成年月指定');}}/>
+            
         </View>
     );
 }

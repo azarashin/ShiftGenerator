@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import CalenderScreen from '../screens/CalenderScreen';
 import StaffListScreen from '../screens/StaffListScreen';
+import YearMonthSelectScreen from '../screens/YearMonthSelectScreen';
 
 import RequirementScreen from '../screens/RequirementScreen';
 import StaffMenu from '../screens/StaffMenu'
@@ -18,6 +19,8 @@ export default function Home() {
 				<Stack.Screen name='従業員一覧' component ={StaffListScreen} />
 				<Stack.Screen name='カレンダー' component ={CalenderScreen} />
 				<Stack.Screen name='従業員メニュー' component ={StaffMenu} />
+				<Stack.Screen name='シフト生成年月指定' component ={YearMonthSelectScreen} />
+				
 
 
 				<Stack.Screen name='日曜日' component={RequirementScreen} />
