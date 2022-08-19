@@ -10,8 +10,8 @@ export default function HomeScreen() {
         <View style={styles.container}>
             <Text style={styles.title}>作業を選択してください</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <Text style={styles.title}>12346</Text>
             <Button title="シフト枠の設定" onPress={() => {navigation.navigate('日曜日');}}/>
+            <Button title="従業員の希望設定" onPress={() => {navigation.navigate('従業員一覧');}}/>
         </View>
     );
 }
