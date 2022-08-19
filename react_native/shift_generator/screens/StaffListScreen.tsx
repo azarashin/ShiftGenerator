@@ -5,7 +5,6 @@ export default function StaffListScreen() {
 
     const navigation = useNavigation(); 
 
-    console.log('シフト枠の設定');
     return (
         <View style={styles.container}>
             <Text style={styles.title}>従業員を選択してください</Text>
