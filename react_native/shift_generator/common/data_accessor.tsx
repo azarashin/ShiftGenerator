@@ -79,3 +79,8 @@ export function DASave_StaffWish(staff: string, date: Date, target : WishData) :
   console.log(date); 
   console.log(key); 
 }
+
+export function DALoad_StaffList(callback: (ret_staffs: Array<string>) => void) : void
+{
+  callback(['鈴木 太郎', '田中 次郎', '佐藤 三郎']);
+}

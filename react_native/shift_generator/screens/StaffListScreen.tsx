@@ -1,16 +1,27 @@
 import { StyleSheet, Text, View, FlatList , Button } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
+import { DALoad_StaffList } from '../common/data_accessor';
+import { useState } from "react";
 
 export default function StaffListScreen() {
 
     const navigation = useNavigation(); 
+    const [init, setInit] = useState(false);
+    const [staffs, setStaffs] = useState(new Array<string>());
+    if(!init)
+    {
+        DALoad_StaffList((ret_staffs: Array<string>) => {
+            setStaffs(ret_staffs); 
+        });
+        setInit(true); 
+    }
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>従業員を選択してください</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <FlatList
-                data = {['鈴木 太郎', '田中 次郎', '佐藤 三郎']}
+                data = {staffs}
                 renderItem={({ item }) =>
                     <View style={styles.textView}>
                         <Button title={item} onPress={() => {navigation.navigate('従業員メニュー', {staff:item});}}/>
