@@ -6,6 +6,7 @@ import CalenderScreen from '../screens/CalenderScreen';
 import StaffListScreen from '../screens/StaffListScreen';
 
 import RequirementScreen from '../screens/RequirementScreen';
+import StaffMenu from '../screens/StaffMenu'
 
 const Stack = createStackNavigator(); 
 
@@ -16,6 +17,7 @@ export default function Home() {
 				<Stack.Screen name='メニュー画面' component ={HomeScreen} />
 				<Stack.Screen name='従業員一覧' component ={StaffListScreen} />
 				<Stack.Screen name='カレンダー' component ={CalenderScreen} />
+				<Stack.Screen name='従業員メニュー' component ={StaffMenu} />
 
 
 				<Stack.Screen name='日曜日' component={RequirementScreen} />

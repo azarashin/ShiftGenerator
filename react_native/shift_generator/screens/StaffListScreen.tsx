@@ -14,7 +14,7 @@ export default function StaffListScreen() {
                 data = {['鈴木 太郎', '田中 次郎', '佐藤 三郎']}
                 renderItem={({ item }) =>
                     <View style={styles.textView}>
-                        <Button title={item} onPress={() => {navigation.navigate('日曜日');}}/>
+                        <Button title={item} onPress={() => {navigation.navigate('従業員メニュー', {staff:item});}}/>
                     </View>
                 }
                 keyExtractor={item => item}
