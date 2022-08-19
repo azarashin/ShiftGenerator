@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList , Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList , Button } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 
 export default function StaffListScreen() {
