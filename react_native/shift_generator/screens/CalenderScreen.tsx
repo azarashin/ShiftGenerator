@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { View } from '../components/Themed';
 import { RadioButton } from 'react-native-paper';
 
-import { StyleSheet, Text, ColorValue, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, Text, ColorValue, StyleProp, ViewStyle, Falsy, RecursiveArray, RegisteredStyle } from 'react-native';
 import { Calendar, DateData } from "react-native-calendars";
 import { useRoute} from '@react-navigation/native'
 import moment from "moment";
 
 import { MarkingProps } from 'react-native-calendars/src/calendar/day/marking'
-import {DALoad_StaffWish, DASave_StaffWish, WishData, WishType} from '../common/data_accessor'
+import {DALoad_StaffWish, DASave_StaffWish, WishData, WishType, EnumWishType, WishTypeLabel} from '../common/data_accessor'
 
 const INITIAL_DATE = moment().format("YYYY-MM-DD");
 
@@ -25,7 +25,7 @@ export default function CalenderScreen() {
 
 
 
-  const [checked, setChecked] = useState(WishType.neutral);
+  const [checked, setChecked] = useState(EnumWishType.neutral);
   const [wish_list, setWishList] = useState({});
   const [month, setMonth] = useState(new Date());
   const [current_staff, setCurrentStaff] = useState('');
@@ -34,7 +34,7 @@ export default function CalenderScreen() {
   const handleDayPress = (date: DateData) => {
     var target : WishData = {...wish_list}
     var id : string = date.dateString;
-    if(target[id] && checked == WishType.neutral) {
+    if(target[id] && checked == EnumWishType.neutral) {
       delete target[id];
     } else {
       target[id] = checked; 
@@ -61,6 +61,21 @@ export default function CalenderScreen() {
     setCurrentStaff(staff); 
   }
 
+  function WishRadioButton(props: { 
+    style: any; 
+    value: EnumWishType; 
+  })
+  {
+    return (
+      <RadioButton.Item style={props.style}
+      value={props.value}
+      label={WishTypeLabel[props.value]}
+      status={checked == props.value ? 'checked' : 'unchecked'}
+      onPress={() => { setChecked(props.value ); console.log(props.value);}}
+    />); 
+
+  }
+
   return (
     <View style={{paddingTop:40}}>
       <Text style={styles.title}>{staff}さんのシフト希望</Text>
@@ -75,24 +90,9 @@ export default function CalenderScreen() {
 
 
       <View style={styles.wish_container}>
-        <RadioButton.Item style={styles.wish}
-          value="wish"
-          label="シフトを希望する日"
-          status={checked === WishType.wish ? 'checked' : 'unchecked'}
-          onPress={() => { setChecked(WishType.wish ); console.log('wish');}}
-        />
-        <RadioButton.Item style={styles.refuse}
-          value="refuse"
-          label="シフトを希望しない日"
-          status={checked === WishType.refuse ? 'checked' : 'unchecked'}
-          onPress={() => { setChecked(WishType.refuse );  console.log('refuse');}}
-        />
-        <RadioButton.Item style={styles.neutral}
-          value="neutral"
-          label="シフトが入ってもよい日"
-          status={checked === WishType.neutral ? 'checked' : 'unchecked'}
-          onPress={() => { setChecked(WishType.neutral );  console.log('neutral');}}
-        />
+        <WishRadioButton value={EnumWishType.wish}    style={styles.wish} />
+        <WishRadioButton value={EnumWishType.refuse}  style={styles.refuse} />
+        <WishRadioButton value={EnumWishType.neutral} style={styles.neutral} />
       </View>
     </View>
   );

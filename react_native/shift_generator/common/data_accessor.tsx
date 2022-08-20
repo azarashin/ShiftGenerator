@@ -42,17 +42,31 @@ export const SlotGroup : string[] = [
 ];
 
 
+// ★EnumWishType とWishType, WishTypeLabel の対応付けをすること(neutral はEnumWishType とWishTypeLabelにのみ必ず含める)
+// CalenderScreen.tsx のCalenderScreen 関数でEnumWishType を参照している箇所がある。
+// EnumWishType またはWishType を更新した時はのCalenderScreen も修正すること。
 
 // 現時点でのTypeScript では連想配列のkey に列挙子を指定できないため、
 // enum の実体を、enum名と同じ文字列にしている…(他に良い方法ないか？)。
-export const enum WishType {
+export const enum EnumWishType {
   wish = 'wish', 
   refuse = 'refuse', 
   neutral = 'neutral'
 }
+// neutral は選択されていない箇所なので、
+// ラジオボタンの選択肢に用いるEnumWishType には含めるが、
+// データを記録するための種別であるWishType には含めない。
+export const WishType : string[] = [EnumWishType.wish, EnumWishType.refuse]; 
+
+export const WishTypeLabel : {[index : string] : string} = {
+  'wish': '希望日', 
+  'refuse': '不可', 
+  'neutral': '指定なし'
+}
+
 
 export declare type WishData = {
-  [index: string]: WishType
+  [index: string]: string
 }
 
 export function DALoad_StaffWish(staff: string, date: Date, callback: (ret_wish: WishData, staff: string, date: Date) => void) : void

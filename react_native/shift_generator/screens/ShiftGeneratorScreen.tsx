@@ -8,7 +8,7 @@ import { Text, View } from '../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
-import { DALoad_StaffList, DALoad_StaffWish, WishData, WishType, DALoad_Slot } from '../common/data_accessor';
+import { DALoad_StaffList, DALoad_StaffWish, WishData, WishType, WishTypeLabel } from '../common/data_accessor';
 
 declare type StaffWishInfo = {
     wish: WishData,
@@ -32,31 +32,31 @@ export default function ShiftGeneratorScreen() {
     {
         DALoad_StaffList((ret_staffs: Array<string>) => {
             var empty_table = {data: new Array<Array<string>>(ret_staffs.length)}; 
-            setTable(empty_table); 
+            setTable((s) => empty_table); 
             for(var i in ret_staffs)
             {
                 var staff = ret_staffs[i]; 
                 DALoad_StaffWish(staff, new Date(year, month - 1, 1), (ret_wish: WishData, ret_staff: string, ret_date: Date) => {
                     var tmp_table = {...table};
+                    var wish_count : {[index: string]: number} = {}; 
+                    for(var i : number = 0; i < WishType.length; i++)
+                    {
+                        wish_count[WishType[i]] = 0;
+                    }
                     var wish : number = 0;
                     var refuse : number = 0;
-                    for(var data in ret_wish)
+                    for(var id in ret_wish)
                     {
-                        var wish_type : WishType = ret_wish[data];
-                        if(wish_type == WishType.wish)
-                        {
-                            wish++; 
-                        }
-                        if(wish_type == WishType.refuse)
-                        {
-                            refuse++; 
-                        }
+                        var wish_type : string = ret_wish[id];
+                        wish_count[wish_type] += 1;
                     }
                     var index : number = ret_staffs.indexOf(ret_staff); 
-                    tmp_table.data[index] = new Array<string>(3);
+                    tmp_table.data[index] = new Array<string>(WishType.length + 1);
                     tmp_table.data[index][0] = ret_staff;
-                    tmp_table.data[index][1] = wish.toString();
-                    tmp_table.data[index][2] = refuse.toString();
+                    for(var i : number = 0; i < WishType.length; i++)
+                    {
+                        tmp_table.data[index][i + 1] = wish_count[WishType[i]].toString();
+                    }
                     setTable(tmp_table); 
 
                     setCount((c) => c+1); 
@@ -73,11 +73,17 @@ export default function ShiftGeneratorScreen() {
         setInit(true); 
     }
 
-    var tableHead =  ['従業員氏名', '都合のよい日の日数', '都合の悪い日の日数']; 
+    var tableHead : string[] =  ['従業員氏名']; 
+    for(var i : number = 0; i < WishType.length; i++)
+    {
+        tableHead.push(WishTypeLabel[WishType[i]])
+    }
+
+    console.log(staff_data); 
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>シフト表を生成する年・月を指定してください</Text>
+            <Text style={styles.title}>希望内訳を確認してください</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
             <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
@@ -99,7 +105,7 @@ function Next(props: { count: number; max: number; staff_data: StaffWishInfo[]; 
 {
     if(props.count > 0 && props.max > 0 && props.count == props.max)
     {
-        return <Button title="次へ" onPress={() => {GenerateShift(props.staff_data, props.navigation);}}/>;
+        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.staff_data, props.navigation);}}/>;
     }
     return <></>
 
