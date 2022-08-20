@@ -79,8 +79,6 @@ export default function ShiftGeneratorScreen() {
         tableHead.push(WishTypeLabel[WishType[i]])
     }
 
-    console.log(staff_data); 
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>希望内訳を確認してください</Text>
