@@ -37,35 +37,7 @@ export default function ShiftGeneratorScreen() {
             {
                 var staff = ret_staffs[i]; 
                 DALoad_StaffWish(staff, new Date(year, month - 1, 1), (ret_wish: WishData, ret_staff: string, ret_date: Date) => {
-                    var tmp_table = {...table};
-                    var wish_count : {[index: string]: number} = {}; 
-                    for(var i : number = 0; i < WishType.length; i++)
-                    {
-                        wish_count[WishType[i]] = 0;
-                    }
-                    var wish : number = 0;
-                    var refuse : number = 0;
-                    for(var id in ret_wish)
-                    {
-                        var wish_type : string = ret_wish[id];
-                        wish_count[wish_type] += 1;
-                    }
-                    var index : number = ret_staffs.indexOf(ret_staff); 
-                    tmp_table.data[index] = new Array<string>(WishType.length + 1);
-                    tmp_table.data[index][0] = ret_staff;
-                    for(var i : number = 0; i < WishType.length; i++)
-                    {
-                        tmp_table.data[index][i + 1] = wish_count[WishType[i]].toString();
-                    }
-                    setTable(tmp_table); 
-
-                    setCount((c) => c+1); 
-                    var new_staff_data = {
-                        wish: ret_wish, 
-                        staff: ret_staff, 
-                        date: ret_date
-                    }; 
-                    setStaffData((s) => [...s, new_staff_data]); 
+                    OnLoadedStaffWish(table, setCount, setTable, setStaffData, ret_staffs, ret_wish, ret_staff, ret_date); 
                 }); 
             }
 
@@ -77,12 +49,7 @@ export default function ShiftGeneratorScreen() {
         
         setInit(true); 
     }
-
-    var tableHead : string[] =  ['従業員氏名']; 
-    for(var i : number = 0; i < WishType.length; i++)
-    {
-        tableHead.push(WishTypeLabel[WishType[i]])
-    }
+    var tableHead : string[] = TableHead(); 
 
     return (
         <View style={styles.container}>
@@ -96,6 +63,59 @@ export default function ShiftGeneratorScreen() {
             <Next count={count} max={table.data.length} required={required} staff_data={staff_data} navigation={navigation}/>
         </View>
     );
+}
+
+function TableHead() : string[]
+{
+    var tableHead : string[] =  ['従業員氏名']; 
+    for(var i : number = 0; i < WishType.length; i++)
+    {
+        tableHead.push(WishTypeLabel[WishType[i]])
+    }
+    return tableHead
+}
+
+function OnLoadedStaffWish(
+    table: {data: string[][]}, 
+    setCount: React.Dispatch<React.SetStateAction<number>>, 
+    setTable: React.Dispatch<React.SetStateAction<{data: string[][]}>>, 
+    setStaffData: React.Dispatch<React.SetStateAction<StaffWishInfo[]>>, 
+    staffs: Array<string>, 
+    wish_data: WishData, 
+    staff: string, 
+    date: Date
+)
+{
+    var tmp_table = {...table};
+    var wish_count : {[index: string]: number} = {}; 
+    for(var i : number = 0; i < WishType.length; i++)
+    {
+        wish_count[WishType[i]] = 0;
+    }
+    var wish : number = 0;
+    var refuse : number = 0;
+    for(var id in wish_data)
+    {
+        var wish_type : string = wish_data[id];
+        wish_count[wish_type] += 1;
+    }
+    var index : number = staffs.indexOf(staff); 
+    tmp_table.data[index] = new Array<string>(WishType.length + 1);
+    tmp_table.data[index][0] = staff;
+    for(var i : number = 0; i < WishType.length; i++)
+    {
+        tmp_table.data[index][i + 1] = wish_count[WishType[i]].toString();
+    }
+    setTable(tmp_table); 
+
+    setCount((c) => c+1); 
+    var new_staff_data = {
+        wish: wish_data, 
+        staff: staff, 
+        date: date
+    }; 
+    setStaffData((s) => [...s, new_staff_data]); 
+
 }
 
 function GenerateShift(
