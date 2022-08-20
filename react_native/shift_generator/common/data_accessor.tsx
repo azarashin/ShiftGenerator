@@ -44,22 +44,27 @@ export const SlotGroup : string[] = [
 
 // ★EnumWishType とWishType, WishTypeLabel の対応付けをすること(neutral はEnumWishType とWishTypeLabelにのみ必ず含める)
 // CalenderScreen.tsx のCalenderScreen 関数でEnumWishType を参照している箇所がある。
-// EnumWishType またはWishType を更新した時はのCalenderScreen も修正すること。
+// RequirementScreen.tsx のRequirementScreen 関数でEnumWishType を参照している箇所がある。
+// EnumWishType またはWishType を更新した時はのCalenderScreen, RequirementScreen も修正すること。
 
 // 現時点でのTypeScript では連想配列のkey に列挙子を指定できないため、
 // enum の実体を、enum名と同じ文字列にしている…(他に良い方法ないか？)。
 export const enum EnumWishType {
-  wish = 'wish', 
+  wish_morning = 'wish-morning', 
+  wish_afternoon = 'wish-afternoon', 
+  wish_night = 'wish-night', 
   refuse = 'refuse', 
   neutral = 'neutral'
 }
 // neutral は選択されていない箇所なので、
 // ラジオボタンの選択肢に用いるEnumWishType には含めるが、
 // データを記録するための種別であるWishType には含めない。
-export const WishType : string[] = [EnumWishType.wish, EnumWishType.refuse]; 
+export const WishType : string[] = [EnumWishType.wish_morning, EnumWishType.wish_afternoon, EnumWishType.wish_night, EnumWishType.refuse]; 
 
 export const WishTypeLabel : {[index : string] : string} = {
-  'wish': '希望日', 
+  'wish-morning': '[時間帯]午前～正午', 
+  'wish-afternoon': '[時間帯]正午～夕方', 
+  'wish-night': '[時間帯]夕方～夜', 
   'refuse': '不可', 
   'neutral': '指定なし'
 }

@@ -5,10 +5,10 @@ import Slider from '@react-native-community/slider'
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View} from '../components/Themed';
-import {DALoad_Slot, DASave_Slot} from '../common/data_accessor'
+import {DALoad_Slot, DASave_Slot, EnumWishType, WishTypeLabel} from '../common/data_accessor'
 import {useNavigation} from '@react-navigation/native'
 
-export default function RequirementScreen(props: { route: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; key: any; }; navigation: any; }) {
+export default function RequirementScreen(props: { route: { name: string}; navigation: any; }) {
 
   //console.log(Object.keys(props.route.params));
   return (
@@ -16,9 +16,9 @@ export default function RequirementScreen(props: { route: { name: string | numbe
       <Text style={styles.title}>{props.route.name}に必要な従業員数を指定してください</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      <ShiftSlider id={props.route.name + ':0'} slot_name="午前"/>
-      <ShiftSlider id={props.route.name + ':1'} slot_name="正午～夕方"/>
-      <ShiftSlider id={props.route.name + ':2'} slot_name="夜"/>
+      <ShiftSlider prefix={props.route.name} slot={EnumWishType.wish_morning}/>
+      <ShiftSlider prefix={props.route.name} slot={EnumWishType.wish_afternoon}/>
+      <ShiftSlider prefix={props.route.name} slot={EnumWishType.wish_night}/>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <WeekSelector/>
@@ -26,16 +26,19 @@ export default function RequirementScreen(props: { route: { name: string | numbe
   );
 }
 
-function ShiftSlider(props: { id: string, slot_name: string})
+function ShiftSlider(props: { prefix: string, slot: EnumWishType})
 {
+  var id: string = props.prefix + ':' + props.slot;
+  var slot_name: string = WishTypeLabel[props.slot];
   const [required, setRequired] = useState(0);
   const [init, setInit] = useState(false);
+  console.log(id);
 
-  DALoad_Slot(props.id, (retRequired: number) => {
+  DALoad_Slot(id, (retRequired: number) => {
     console.log(retRequired);
     setRequired(retRequired);
     setInit(true);
-    DASave_Slot(props.id, retRequired); 
+    DASave_Slot(id, retRequired); 
   }); 
 
   function onChangeValue(val: number)
@@ -43,8 +46,8 @@ function ShiftSlider(props: { id: string, slot_name: string})
     if(init)
     {
       setRequired(val);
-      console.log('save: ' + props.id + ':' + val);
-      DASave_Slot(props.id, val); 
+      console.log('save: ' + id + ':' + val);
+      DASave_Slot(id, val); 
     }
   }
  
@@ -52,7 +55,7 @@ function ShiftSlider(props: { id: string, slot_name: string})
     <View style={styles.container}>
       <View style={styles.slider_text}>
         <Text style={styles.slider_text_slot}>
-          [時間帯] {props.slot_name}
+          {slot_name}
         </Text>
         <Text style={styles.slider_text_requirement}>
           従業員数: {required}

@@ -13,10 +13,18 @@ import {DALoad_StaffWish, DASave_StaffWish, WishData, WishType, EnumWishType, Wi
 
 const INITIAL_DATE = moment().format("YYYY-MM-DD");
 
-const color_wish: ColorValue = 'cyan'
+const color_wish_morning: ColorValue = 'greenyellow'
+const color_wish_afternoon: ColorValue = 'blanchedalmond'
+const color_wish_night: ColorValue = 'deepskyblue'
 const color_refuse: ColorValue = 'pink'
 const color_neutral: ColorValue = 'white'
-const color_map : {[index: string]: string} = {'wish': color_wish, 'refuse': color_refuse, 'neutral': color_neutral}; 
+const color_map : {[index: string]: string} = {
+  'wish-morning': color_wish_morning,
+  'wish-afternoon': color_wish_afternoon,
+  'wish-night': color_wish_night,
+  'refuse': color_refuse, 
+  'neutral': color_neutral
+}; 
 const background_map : {[index: string]: string} = {'wish': 'white', 'refuse': 'white', 'neutral': 'black'}; 
 
 export default function CalenderScreen() {
@@ -90,7 +98,9 @@ export default function CalenderScreen() {
 
 
       <View style={styles.wish_container}>
-        <WishRadioButton value={EnumWishType.wish}    style={styles.wish} />
+        <WishRadioButton value={EnumWishType.wish_morning}    style={styles.wish_morning} />
+        <WishRadioButton value={EnumWishType.wish_afternoon}    style={styles.wish_afternoon} />
+        <WishRadioButton value={EnumWishType.wish_night}    style={styles.wish_night} />
         <WishRadioButton value={EnumWishType.refuse}  style={styles.refuse} />
         <WishRadioButton value={EnumWishType.neutral} style={styles.neutral} />
       </View>
@@ -141,8 +151,16 @@ const styles : {[index: string]: StyleProp<ViewStyle>} = StyleSheet.create({
     color: '#00FF00',
     fontSize: 24,
   },
-  wish: {
-    backgroundColor: color_wish, 
+  wish_morning: {
+    backgroundColor: color_wish_morning, 
+    fontSize: 24,
+  },
+  wish_afternoon: {
+    backgroundColor: color_wish_afternoon, 
+    fontSize: 24,
+  },
+  wish_night: {
+    backgroundColor: color_wish_night, 
     fontSize: 24,
   },
   refuse: {
