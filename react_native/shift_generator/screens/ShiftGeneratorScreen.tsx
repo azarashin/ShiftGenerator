@@ -65,7 +65,7 @@ export default function ShiftGeneratorScreen() {
                         staff: ret_staff, 
                         date: ret_date
                     }; 
-                    setStaffData([...staff_data, new_staff_data]); 
+                    setStaffData((s) => [...s, new_staff_data]); 
                 }); 
             }
 
@@ -91,8 +91,8 @@ export default function ShiftGeneratorScreen() {
 
 function GenerateShift(staff_data: StaffWishInfo[], navigation: { navigate: (arg0: string, arg1: {}) => void; })
 {
-    
-    navigation.navigate('シフト生成確認', {});
+    console.log(staff_data);   
+//    navigation.navigate('シフト生成確認', {});
 }
 
 function Next(props: { count: number; max: number; staff_data: StaffWishInfo[]; navigation: { navigate: (arg0: string, arg1: {}) => void; }; })
