@@ -37,6 +37,63 @@ export function DALoad_Slot(slot: string, callback: (ret_required: number) => vo
       });
 }
 
+export function DALoad_AllSlots(callback: (ret_required: {group: string, sub_group: string, required: number}[]) => void) { 
+  DALoad_IndexedSlot(0, 0, [], callback); 
+
+}
+
+function DALoad_IndexedSlot(
+  i : number, 
+  j : number, 
+  data : {group: string, sub_group: string, required: number}[], 
+  callback: (ret_required: {group: string, sub_group: string, required: number}[]) => void)
+  {
+    if(SlotGroup.length == 0 || WishType.length == 0)
+    {
+      callback([]);
+      return; 
+    }
+    if(j >= WishType.length)
+    {
+      i++; 
+      j = 0; 
+    }
+    if(i >= SlotGroup.length)
+    {
+      callback(data);
+      return; 
+    }
+    var index = i * WishType.length + j; 
+    console.log(i, j); 
+    var slot = MakeSlotID(SlotGroup[i], WishType[j]); 
+    var key = 'slot:' + slot;
+    storage.load({
+        key : key
+      }).then((d) => {
+        // 読み込み成功時処理
+        data.push({group: SlotGroup[i], sub_group: WishType[j], required: d.required});
+        DALoad_IndexedSlot(i, j+1, data, callback); 
+      }).catch(err => {
+        // 読み込み失敗時処理
+        console.log('load failed.');
+        data.push({group: SlotGroup[i], sub_group: WishType[j], required: 0});
+        DALoad_IndexedSlot(i, j+1, data, callback); 
+      });
+    }
+
+export function MakeSlotID(group : string, sub_group : string)
+{
+  console.log(group);
+  console.log(sub_group);
+  if(group.search('\t') >= 0 || group.search('\t') >= 0)
+  {
+    console.error('group, sub_group must not contain \\t!');
+    console.error('group=' + group);
+    console.error('sub_group=' + sub_group);
+  }
+  return group + "\t" + sub_group; 
+}
+
 export const SlotGroup : string[] = [
   '日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', 
 ];

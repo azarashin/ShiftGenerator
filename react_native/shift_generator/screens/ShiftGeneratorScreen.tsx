@@ -8,7 +8,7 @@ import { Text, View } from '../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
-import { DALoad_StaffList, DALoad_StaffWish, WishData, WishType, WishTypeLabel } from '../common/data_accessor';
+import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, WishType, WishTypeLabel } from '../common/data_accessor';
 
 declare type StaffWishInfo = {
     wish: WishData,
@@ -27,7 +27,7 @@ export default function ShiftGeneratorScreen() {
     const [count, setCount] = useState(0);
     const [table, setTable] = useState({data: new Array<Array<string>>(0)});
     const [staff_data, setStaffData] = useState(new Array<StaffWishInfo>(0));
-    
+    const [required, setRequired] = useState(new Array<{group: string, sub_group: string, required: number}>);
     if(!init)
     {
         DALoad_StaffList((ret_staffs: Array<string>) => {
@@ -70,6 +70,11 @@ export default function ShiftGeneratorScreen() {
             }
 
         });
+
+        DALoad_AllSlots((ret_required: {group: string, sub_group: string, required: number}[]) => {
+            setRequired(ret_required);
+        })
+        
         setInit(true); 
     }
 
@@ -88,22 +93,33 @@ export default function ShiftGeneratorScreen() {
                 <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
                 <Rows data={table.data} textStyle={styles.text}/>
             </Table>
-            <Next count={count} max={table.data.length} staff_data={staff_data} navigation={navigation}/>
+            <Next count={count} max={table.data.length} required={required} staff_data={staff_data} navigation={navigation}/>
         </View>
     );
 }
 
-function GenerateShift(staff_data: StaffWishInfo[], navigation: { navigate: (arg0: string, arg1: {}) => void; })
+function GenerateShift(
+    staff_data: StaffWishInfo[], 
+    required : {group: string, sub_group: string, required: number}[], 
+    navigation: { navigate: (arg0: string, arg1: {}) => void;}
+)
 {
-    console.log(staff_data);   
+    console.log(staff_data);
+    console.log(required);
 //    navigation.navigate('シフト生成確認', {});
 }
 
-function Next(props: { count: number; max: number; staff_data: StaffWishInfo[]; navigation: { navigate: (arg0: string, arg1: {}) => void; }; })
+function Next(props: { 
+    count: number; 
+    max: number;
+    required : {group: string, sub_group: string, required: number}[]; 
+    staff_data: StaffWishInfo[]; 
+    navigation: { navigate: (arg0: string, arg1: {}) => void; }; 
+})
 {
-    if(props.count > 0 && props.max > 0 && props.count == props.max)
+    if(props.count > 0 && props.max > 0 && props.required.length > 0 && props.count == props.max)
     {
-        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.staff_data, props.navigation);}}/>;
+        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.staff_data, props.required, props.navigation);}}/>;
     }
     return <></>
 
