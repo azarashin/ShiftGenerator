@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import CalenderScreen from '../screens/CalenderScreen';
 import StaffListScreen from '../screens/StaffListScreen';
 import YearMonthSelectScreen from '../screens/YearMonthSelectScreen';
+import ShiftGeneratorScreen from '../screens/ShiftGeneratorScreen';
 
 import RequirementScreen from '../screens/RequirementScreen';
 import StaffMenu from '../screens/StaffMenu'
@@ -21,7 +22,7 @@ export default function Home() {
 				<Stack.Screen name='カレンダー' component ={CalenderScreen} />
 				<Stack.Screen name='従業員メニュー' component ={StaffMenu} />
 				<Stack.Screen name='シフト生成年月指定' component ={YearMonthSelectScreen} />
-				
+				<Stack.Screen name='シフト生成確認' component ={ShiftGeneratorScreen} />
 
 				<Stack.Screen name={SlotGroup[0]} component={RequirementScreen} />
 				<Stack.Screen name={SlotGroup[1]} component={RequirementScreen} />

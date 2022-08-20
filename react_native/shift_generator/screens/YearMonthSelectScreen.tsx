@@ -50,7 +50,7 @@ export default function YearMonthSelectScreen() {
                 />
 
             </View>
-            <Button title="次へ" onPress={() => {navigation.navigate('シフト生成確認', {staff:staff});}}/>
+            <Button title="次へ" onPress={() => {navigation.navigate('シフト生成確認', {year: value_years, month:value_month});}}/>
         </View>
     );
 }
