@@ -49,18 +49,19 @@ export declare type WishData = {
   [index: string]: WishType
 }
 
-export function DALoad_StaffWish(staff: string, date: Date, callback: (ret_wish: WishData) => void) : void
+export function DALoad_StaffWish(staff: string, date: Date, callback: (ret_wish: WishData, staff: string, date: Date) => void) : void
 {
   var key = 'wish:' + staff + ':' + date.getFullYear() + ':' + (date.getMonth() + 1);
   storage.load({
       key : key
     }).then((data) => {
       // 読み込み成功時処理
-      callback(data.wish);
+      callback(data.wish, staff, date);
     }).catch(err => {
       // 読み込み失敗時処理
       console.log('load failed.');
-      callback({});
+      console.log(key); 
+      callback({}, staff, date);
     });
     console.log(date); 
     console.log(key); 

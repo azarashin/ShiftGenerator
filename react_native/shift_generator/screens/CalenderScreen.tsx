@@ -44,7 +44,7 @@ export default function CalenderScreen() {
     console.log(date.dateString);
   }
 
-  function onCompleteLoad(ret_wish: WishData) : void
+  function onCompleteLoad(ret_wish: WishData, staff: string, date: Date) : void
   {
     setWishList(ret_wish);
   }
