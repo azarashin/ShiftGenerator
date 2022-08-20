@@ -8,6 +8,7 @@ import YearMonthSelectScreen from '../screens/YearMonthSelectScreen';
 
 import RequirementScreen from '../screens/RequirementScreen';
 import StaffMenu from '../screens/StaffMenu'
+import { SlotGroup } from '../common/data_accessor';
 
 const Stack = createStackNavigator(); 
 
@@ -22,14 +23,13 @@ export default function Home() {
 				<Stack.Screen name='シフト生成年月指定' component ={YearMonthSelectScreen} />
 				
 
-
-				<Stack.Screen name='日曜日' component={RequirementScreen} />
-				<Stack.Screen name='月曜日' component={RequirementScreen} />
-				<Stack.Screen name='火曜日' component={RequirementScreen} />
-				<Stack.Screen name='水曜日' component={RequirementScreen} />
-				<Stack.Screen name='木曜日' component={RequirementScreen} />
-				<Stack.Screen name='金曜日' component={RequirementScreen} />
-				<Stack.Screen name='土曜日' component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[0]} component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[1]} component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[2]} component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[3]} component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[4]} component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[5]} component={RequirementScreen} />
+				<Stack.Screen name={SlotGroup[6]} component={RequirementScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

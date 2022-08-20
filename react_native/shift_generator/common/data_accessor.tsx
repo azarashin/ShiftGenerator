@@ -37,6 +37,12 @@ export function DALoad_Slot(slot: string, callback: (ret_required: number) => vo
       });
 }
 
+export const SlotGroup : string[] = [
+  '日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', 
+];
+
+
+
 // 現時点でのTypeScript では連想配列のkey に列挙子を指定できないため、
 // enum の実体を、enum名と同じ文字列にしている…(他に良い方法ないか？)。
 export const enum WishType {
