@@ -20,9 +20,9 @@ export function HTTPRequest_GenerateShift(
       .then((res) => {
         console.log(res.data);
         if(res.data.result == 'ok'){
-          alert('認証OK');
+          alert('実行開始しました');
         }else{
-          alert('認証NG');
+          alert('処理中です');
         }
       })
       .catch(error => console.log(error));
