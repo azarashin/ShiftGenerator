@@ -64,7 +64,6 @@ function DALoad_IndexedSlot(
       return; 
     }
     var index = i * WishType.length + j; 
-    console.log(i, j); 
     var slot = MakeSlotID(SlotGroup[i], WishType[j]); 
     var key = 'slot:' + slot;
     storage.load({
@@ -83,8 +82,6 @@ function DALoad_IndexedSlot(
 
 export function MakeSlotID(group : string, sub_group : string)
 {
-  console.log(group);
-  console.log(sub_group);
   if(group.search('\t') >= 0 || group.search('\t') >= 0)
   {
     console.error('group, sub_group must not contain \\t!');
@@ -142,7 +139,6 @@ export function DALoad_StaffWish(staff: string, date: Date, callback: (ret_wish:
     }).catch(err => {
       // 読み込み失敗時処理
       console.log('load failed.');
-      console.log(key); 
       callback({}, staff, date);
     });
     console.log(date); 
