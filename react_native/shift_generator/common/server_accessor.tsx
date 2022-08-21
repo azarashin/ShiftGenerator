@@ -4,16 +4,16 @@ import axios from 'axios';
 const server_address : string = 'http://127.0.0.1:5000';
 
 export function HTTPRequest_GenerateShift(
-    staff_slot: StaffToSlots[], 
+    staff_slots: StaffToSlots[], 
     required : {slot_id: string, required: number}[], 
     conditions: {enable: boolean, value:number}[] 
 )
 {
-    console.log(staff_slot);
+    console.log(staff_slots);
     console.log(required);
     console.log(conditions);
 
-    var data = {staff_slot: staff_slot, required: required, conditions: conditions};
+    var data = {staff_slot: staff_slots, required: required, conditions: conditions};
 
     axios
       .post(server_address + '/shift_generate', data)
