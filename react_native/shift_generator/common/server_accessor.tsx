@@ -18,7 +18,8 @@ export function HTTPRequest_GenerateShift(
     axios
       .post(server_address + '/shift_generate', data)
       .then((res) => {
-        if(res.data.auth){
+        console.log(res.data);
+        if(res.data.result == 'ok'){
           alert('認証OK');
         }else{
           alert('認証NG');
