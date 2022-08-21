@@ -13,7 +13,7 @@ export function HTTPRequest_GenerateShift(
     console.log(required);
     console.log(conditions);
 
-    var data = {staff_slot: staff_slots, required: required, conditions: conditions};
+    var data = {staff_slots: staff_slots, required: required, conditions: conditions};
 
     axios
       .post(server_address + '/shift_generate', data)
