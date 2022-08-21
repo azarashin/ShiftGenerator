@@ -1,11 +1,11 @@
-import { StaffWishInfo } from '../common/data_accessor';
+import { StaffToSlots } from '../common/data_accessor';
 import axios from 'axios';
 
 const server_address : string = 'http://127.0.0.1:5000';
 
 export function HTTPRequest_GenerateShift(
-    staff_data: StaffWishInfo[], 
-    required : {group: string, sub_group: string, required: number}[], 
+    staff_data: StaffToSlots[], 
+    required : {slot_id: string, required: number}[], 
     conditions: {enable: boolean, value:number}[] 
 )
 {

@@ -11,7 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
 import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, 
-    WishType, WishTypeLabel, MethodList, StaffWishInfo } from '../common/data_accessor';
+    WishType, WishTypeLabel, MethodList, StaffWishInfo, SlotGloupToSlot,
+    StaffToSlots, AttachSlotToStaff } from '../common/data_accessor';
 
 import { HTTPRequest_GenerateShift } from '../common/server_accessor';
 
@@ -74,7 +75,7 @@ export default function ShiftGeneratorScreen() {
             </View>
 
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <Next count={count} max={table.data.length} required={required} staff_data={staff_data} conditions={conditions} navigation={navigation}/>
+            <Next year={year} month={month} count={count} max={table.data.length} required={required} staff_data={staff_data} conditions={conditions} navigation={navigation}/>
         </View>
     );
 }
@@ -225,17 +226,23 @@ function OnLoadedStaffWish(
 }
 
 function GenerateShift(
+    year: number, 
+    month: number, 
     staff_data: StaffWishInfo[], 
     required : {group: string, sub_group: string, required: number}[], 
     conditions: {enable: boolean, value:number}[], 
     navigation: { navigate: (arg0: string, arg1: {}) => void;}
 )
 {
-    HTTPRequest_GenerateShift(staff_data, required, conditions);
+    var staff_slot : StaffToSlots[] = AttachSlotToStaff(staff_data);
+    var raw_required = SlotGloupToSlot(year, month, required);
+    HTTPRequest_GenerateShift(staff_slot, raw_required, conditions);
 //    navigation.navigate('シフト生成確認', {});
 }
 
 function Next(props: { 
+    year: number,
+    month: number, 
     count: number; 
     max: number;
     required : {group: string, sub_group: string, required: number}[]; 
@@ -246,7 +253,7 @@ function Next(props: {
 {
     if(props.count > 0 && props.max > 0 && props.required.length > 0 && props.count == props.max)
     {
-        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.staff_data, props.required, props.conditions, props.navigation);}}/>;
+        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.year, props.month, props.staff_data, props.required, props.conditions, props.navigation);}}/>;
     }
     return <></>
 

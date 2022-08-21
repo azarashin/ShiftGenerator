@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export declare type StaffWishInfo = {
   wish: WishData,
   staff: string, 
-  slot_id: string
 }
 
 const storage: Storage = new Storage({
@@ -107,6 +106,74 @@ export const SlotGroup : string[] = [
   '日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', 
 ];
 
+function DaysInYearMonth(year: number, month: number): number
+{
+	return new Date(year, month, 0).getDate();
+}
+
+export function SlotGloupToSlot(year: number, month: number, source: {group: string, sub_group: string, required: number}[])
+  : {slot_id: string, required: number}[]
+{
+  var days: number = DaysInYearMonth(year, month); 
+  var ret: {slot_id: string, required: number}[] = [];
+  var map: {[weekday: string]: {sub_group: string, required: number}[]} = {};
+  for(var i: number = 0; i < source.length; i++)
+  {
+    if(!map[source[i].group])
+    {
+      map[source[i].group] = [];
+    }
+    map[source[i].group].push({sub_group: source[i].sub_group, required: source[i].required});
+  }
+
+  console.log(source);
+  
+  for(var day: number = 1; day <= days; day++)
+  {
+    var target: Date = new Date(year, month - 1, day); 
+    var weekday: number = target.getDay(); 
+    var target_slots: {sub_group: string, required: number}[] = map[SlotGroup[weekday]]; 
+    for(var i: number = 0; i <  target_slots.length;i++)
+    {
+      var target_slot: {sub_group: string, required: number} = target_slots[i];
+      var id = year + '\t' + month + '\t' + day + '\t' + target_slot.sub_group;
+      ret.push({slot_id: id, required: target_slot.required});
+    }
+  }
+  return ret;
+}
+
+export function MakeSlotIDByDate(year: number, month: number, day: number, sub_group: string)
+{
+  var id = year + '\t' + month + '\t' + day + '\t' + sub_group;
+  return id; 
+}
+
+export declare type StaffToSlots = 
+{
+  name: string, 
+  slots: string[]
+}
+
+export function AttachSlotToStaff(staff_datas: StaffWishInfo[]) : StaffToSlots[]
+{
+  var ret: StaffToSlots[] = [];
+  for(var i: number = 0;i < staff_datas.length;i++)
+  {
+    var staff: StaffToSlots = {
+      name: staff_datas[i].staff, 
+      slots: []
+    }; 
+    for(var dt in staff_datas[i].wish)
+    {
+      var d: Date = new Date(dt); 
+      var id: string = MakeSlotIDByDate(d.getFullYear(), d.getMonth() + 1, d.getDate(), staff_datas[i].wish[dt]);
+      staff.slots.push(id);
+    }
+    ret.push(staff); 
+  }
+  return ret; 
+}
 
 // ★EnumWishType とWishType, WishTypeLabel の対応付けをすること(neutral はEnumWishType とWishTypeLabelにのみ必ず含める)
 // CalenderScreen.tsx のCalenderScreen 関数でEnumWishType を参照している箇所がある。
