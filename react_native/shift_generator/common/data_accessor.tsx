@@ -60,12 +60,12 @@ function DALoad_IndexedSlot(
   data : {group: string, sub_group: string, required: number}[], 
   callback: (ret_required: {group: string, sub_group: string, required: number}[]) => void)
   {
-    if(SlotGroup.length == 0 || WishType.length == 0)
+    if(SlotGroup.length == 0 || SlotType.length == 0)
     {
       callback([]);
       return; 
     }
-    if(j >= WishType.length)
+    if(j >= SlotType.length)
     {
       i++; 
       j = 0; 
@@ -75,19 +75,19 @@ function DALoad_IndexedSlot(
       callback(data);
       return; 
     }
-    var index = i * WishType.length + j; 
+    var index = i * SlotType.length + j; 
     var slot = MakeSlotIDByGroup(SlotGroup[i], SlotType[j]); 
     var key = 'slot:' + slot;
     storage.load({
         key : key
       }).then((d) => {
         // 読み込み成功時処理
-        data.push({group: SlotGroup[i], sub_group: WishType[j], required: d.required});
+        data.push({group: SlotGroup[i], sub_group: SlotType[j], required: d.required});
         DALoad_IndexedSlot(i, j+1, data, callback); 
       }).catch(err => {
         // 読み込み失敗時処理
         console.log('load failed.');
-        data.push({group: SlotGroup[i], sub_group: WishType[j], required: 0});
+        data.push({group: SlotGroup[i], sub_group: SlotType[j], required: 0});
         DALoad_IndexedSlot(i, j+1, data, callback); 
       });
     }
@@ -125,7 +125,9 @@ export const enum EnumWishType {
 // neutral は選択されていない箇所なので、
 // ラジオボタンの選択肢に用いるEnumWishType には含めるが、
 // データを記録するための種別であるWishType には含めない。
-export const WishType : string[] = [EnumWishType.wish_morning, EnumWishType.wish_afternoon, EnumWishType.wish_night, EnumWishType.refuse]; 
+export const SlotType : string[] = [EnumWishType.wish_morning, EnumWishType.wish_afternoon, EnumWishType.wish_night]; 
+export const WishType : string[] = [...SlotType, EnumWishType.refuse]; 
+
 
 export const WishTypeLabel : {[index : string] : string} = {
   'wish-morning': '[時間帯]午前～正午', 
