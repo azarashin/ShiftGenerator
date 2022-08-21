@@ -18,6 +18,23 @@ class ShiftInspector:
         if e == 1:
           print(container.frame.slots[index].id)
         index = index + 1
+  
+  def slot_to_wish(self, slot):
+    data = slot.split('\t')
+    return {
+      'date': '{}/{}/{}'.format(data[0], data[1], data[2]), 
+      'wish': data[3]
+    }
+  
+  def get_json(self, container, names):
+    user_no = 0
+    datas = [[container.frame.slots[i].id for i in range(len(line)) if line[i] == 1]
+      for line in container.slice()]
+    json = [{
+        'name': names[i], 
+        'slots': [self.slot_to_wish(d) for d in datas[i]]
+      } for i in range(len(datas))]
+    return json
 
   # CSV形式でアサイン結果の出力をする
   def print_csv(self, container):

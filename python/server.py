@@ -34,5 +34,14 @@ def shift_generate():
     else:
         return {'result': 'ng'}
 
+@app.route('/get_result', methods=['GET'])
+def get_result():
+    progress, json = shift_generator.get_result()
+    return jsonify({
+        'progress': int(progress * 100), 
+        'result': json
+    })
+
+
 if __name__ == "__main__":
     app.run(debug=True)
