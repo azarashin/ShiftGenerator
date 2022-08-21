@@ -200,8 +200,6 @@ function OnLoadedStaffWish(
     {
         wish_count[WishType[i]] = 0;
     }
-    var wish : number = 0;
-    var refuse : number = 0;
     for(var id in wish_data)
     {
         var wish_type : string = wish_data[id];
