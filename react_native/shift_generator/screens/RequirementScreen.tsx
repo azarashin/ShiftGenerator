@@ -5,7 +5,7 @@ import Slider from '@react-native-community/slider'
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View} from '../components/Themed';
-import {DALoad_Slot, DASave_Slot, EnumWishType, WishTypeLabel, MakeSlotID} from '../common/data_accessor'
+import {DALoad_Slot, DASave_Slot, EnumWishType, WishTypeLabel, MakeSlotIDByGroup} from '../common/data_accessor'
 import {useNavigation} from '@react-navigation/native'
 
 export default function RequirementScreen(props: { route: { name: string}; navigation: any; }) {
@@ -30,7 +30,7 @@ function ShiftSlider(props: { prefix: string, slot: EnumWishType})
 {
   var group = props.prefix; 
   var sub_group = props.slot; 
-  var id: string = MakeSlotID(group, sub_group);
+  var id: string = MakeSlotIDByGroup(group, sub_group);
   var slot_name: string = WishTypeLabel[props.slot];
   const [required, setRequired] = useState(0);
   const [init, setInit] = useState(false);

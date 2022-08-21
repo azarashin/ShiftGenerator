@@ -76,7 +76,7 @@ function DALoad_IndexedSlot(
       return; 
     }
     var index = i * WishType.length + j; 
-    var slot = MakeSlotID(SlotGroup[i], WishType[j]); 
+    var slot = MakeSlotIDByGroup(SlotGroup[i], SlotType[j]); 
     var key = 'slot:' + slot;
     storage.load({
         key : key
