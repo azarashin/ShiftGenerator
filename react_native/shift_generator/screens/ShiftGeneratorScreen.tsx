@@ -2,13 +2,15 @@ import { StyleSheet, Button } from 'react-native';
 
 import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
 import { Table, Row, Rows } from 'react-native-table-component';
+import { Checkbox } from 'react-native-paper';
+import Slider from '@react-native-community/slider'
 
 import { useState } from "react";
 import { Text, View } from '../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
-import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, WishType, WishTypeLabel } from '../common/data_accessor';
+import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, WishType, WishTypeLabel, MethodList } from '../common/data_accessor';
 
 declare type StaffWishInfo = {
     wish: WishData,
@@ -28,6 +30,11 @@ export default function ShiftGeneratorScreen() {
     const [table, setTable] = useState({data: new Array<Array<string>>(0)});
     const [staff_data, setStaffData] = useState(new Array<StaffWishInfo>(0));
     const [required, setRequired] = useState(new Array<{group: string, sub_group: string, required: number}>);
+    const [conditions, setConditions] = useState([{enable: true, value:1}, ...(
+        new Array(MethodList.length-1).fill(null).map(e=>({enable: false, value:1}))
+        )]);
+        // ↑fill でまずnull を複製しておき、その後map で別々のインスタンスを生成する。
+
     if(!init)
     {
         DALoad_StaffList((ret_staffs: Array<string>) => {
@@ -60,9 +67,113 @@ export default function ShiftGeneratorScreen() {
                 <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
                 <Rows data={table.data} textStyle={styles.text}/>
             </Table>
-            <Next count={count} max={table.data.length} required={required} staff_data={staff_data} navigation={navigation}/>
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+            <View style={styles.slider_group}>
+                <SelectCondition conditions={conditions} setConditions={setConditions} index={0} />
+                <SelectCondition conditions={conditions} setConditions={setConditions} index={1} />
+                <SelectCondition conditions={conditions} setConditions={setConditions} index={2} />
+                <SelectCondition conditions={conditions} setConditions={setConditions} index={3} />
+            </View>
+
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+            <Next count={count} max={table.data.length} required={required} staff_data={staff_data} conditions={conditions} navigation={navigation}/>
         </View>
     );
+}
+
+function SelectCondition(
+    props: {
+        conditions: {enable: boolean, value: number}[], 
+        setConditions: React.Dispatch<React.SetStateAction<{enable: boolean, value: number}[]>>, 
+        index: number
+        }
+): JSX.Element
+{
+    return (
+        <View>
+            <ConditionSelector conditions={props.conditions} setConditions={props.setConditions} index={props.index}/>            
+            <ConditionSlider conditions={props.conditions} setConditions={props.setConditions} index={props.index}/>            
+        </View>
+  );
+}
+
+function ConditionSelector(
+    props: {
+        conditions: {enable: boolean, value: number}[], 
+        setConditions: React.Dispatch<React.SetStateAction<{enable: boolean, value: number}[]>>, 
+        index: number
+    }
+)
+{
+    return (
+        <View style={styles.labeled_checkbox}>
+        <Checkbox
+            status={props.conditions[props.index].enable ? 'checked' : 'unchecked'}
+            onPress={() => {
+                if(props.conditions[props.index].enable && CountEnable(props.conditions) <= 1)
+                {
+                    return; // すべてのチェックが外れてしまうので何もしない
+                }
+                var tmp_conditions = [...props.conditions]; 
+                var tc = tmp_conditions[props.index];
+                // 新しいインスタンスを生成し、インスタンスごと置き換える
+                tmp_conditions[props.index] = {enable: !tc.enable, value: tc.value}; 
+                // ↓下記は注意が必要なやり方。初期化時点でtmp_conditions の各要素が同じインスタンスを指していると各要素が連動して変化してしまう。
+                // tmp_conditions[props.index].enable = !tmp_conditions[props.index].enable
+                props.setConditions(() => tmp_conditions);
+            }}
+        />
+        <Text>{MethodList[props.index]}</Text>
+    </View>
+);
+
+}
+
+function ConditionSlider(
+    props: {
+        conditions: {enable: boolean, value: number}[], 
+        setConditions: React.Dispatch<React.SetStateAction<{enable: boolean, value: number}[]>>, 
+        index: number
+    }
+)
+{
+    const max_value = 100;
+    var con: {enable: boolean, value: number} = props.conditions[props.index]; 
+    if(!con.enable)
+    {
+        return (<></>); 
+    }
+    return (
+        <Slider style={styles.slider}
+            step={1}
+            maximumValue={max_value}
+            minimumValue={1}
+            onValueChange={(val) => {
+                var tmp_conditions : {enable: boolean, value: number}[] = [...props.conditions]; 
+                tmp_conditions[props.index] = {enable: true, value: val}
+                props.setConditions(() => tmp_conditions)
+                
+            }}
+            onSlidingStart={() => {console.log('onSlidingStart');}}
+            value={con.value}
+        />
+
+    );    
+}
+
+function CountEnable(conds: {enable: boolean, value: number}[]): number
+{
+    var sum: number = 0; 
+    for(var i: number = 0; i < conds.length; i++)
+    {
+        if(conds[i].enable) 
+        {
+            sum++; 
+        }
+    }
+    console.log(sum );
+    return sum; 
 }
 
 function TableHead() : string[]
@@ -121,11 +232,13 @@ function OnLoadedStaffWish(
 function GenerateShift(
     staff_data: StaffWishInfo[], 
     required : {group: string, sub_group: string, required: number}[], 
+    conditions: {enable: boolean, value:number}[], 
     navigation: { navigate: (arg0: string, arg1: {}) => void;}
 )
 {
     console.log(staff_data);
     console.log(required);
+    console.log(conditions);
 //    navigation.navigate('シフト生成確認', {});
 }
 
@@ -134,12 +247,13 @@ function Next(props: {
     max: number;
     required : {group: string, sub_group: string, required: number}[]; 
     staff_data: StaffWishInfo[]; 
+    conditions: {enable: boolean, value:number}[]; 
     navigation: { navigate: (arg0: string, arg1: {}) => void; }; 
 })
 {
     if(props.count > 0 && props.max > 0 && props.required.length > 0 && props.count == props.max)
     {
-        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.staff_data, props.required, props.navigation);}}/>;
+        return <Button title="シフト表を自動生成する" onPress={() => {GenerateShift(props.staff_data, props.required, props.conditions, props.navigation);}}/>;
     }
     return <></>
 
@@ -166,6 +280,18 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 6 
-  }
+  }, 
+  slider_group: {
+    alignItems: 'flex-start'
+  },
+  labeled_checkbox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }, 
+  slider: {
+    width: 200, 
+    height: 20
+  },
 
 });

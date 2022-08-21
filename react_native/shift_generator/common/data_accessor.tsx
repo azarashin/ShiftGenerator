@@ -13,6 +13,13 @@ const storage: Storage = new Storage({
     enableCache: true,
 })
 
+export const MethodList: string[] = [
+  "スロットに対する想定人数と実割り当て人数の差が少ない", 
+  "要望の半分以上割り当てられた従業員数が多い", // FewWorkStaff
+  "すべてのスロットに従業員が割り当てられる", // 
+  "応募していないスロットへの割り当てが少ない", 
+];
+
 export function DASave_Slot(slot: string, required: number) { 
     var key = 'slot:' + slot;
     storage.save({
