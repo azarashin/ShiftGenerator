@@ -92,7 +92,7 @@ function DALoad_IndexedSlot(
       });
     }
 
-export function MakeSlotID(group : string, sub_group : string)
+export function MakeSlotIDByGroup(group : string, sub_group : string)
 {
   if(group.search('\t') >= 0 || group.search('\t') >= 0)
   {
