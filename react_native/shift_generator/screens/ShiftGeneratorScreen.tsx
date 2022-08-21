@@ -13,6 +13,8 @@ import { useRoute } from '@react-navigation/native';
 import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, 
     WishType, WishTypeLabel, MethodList, StaffWishInfo } from '../common/data_accessor';
 
+import { HTTPRequest_GenerateShift } from '../common/server_accessor';
+
 export default function ShiftGeneratorScreen() {
     const navigation = useNavigation(); 
     const route = useRoute();
@@ -231,9 +233,7 @@ function GenerateShift(
     navigation: { navigate: (arg0: string, arg1: {}) => void;}
 )
 {
-    console.log(staff_data);
-    console.log(required);
-    console.log(conditions);
+    HTTPRequest_GenerateShift(staff_data, required, conditions);
 //    navigation.navigate('シフト生成確認', {});
 }
 
