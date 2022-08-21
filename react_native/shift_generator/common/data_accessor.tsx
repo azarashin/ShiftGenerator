@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export declare type StaffWishInfo = {
   wish: WishData,
   staff: string, 
-  date: Date
+  slot_id: string
 }
 
 const storage: Storage = new Storage({
