@@ -10,13 +10,8 @@ import { Text, View } from '../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
-import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, WishType, WishTypeLabel, MethodList } from '../common/data_accessor';
-
-declare type StaffWishInfo = {
-    wish: WishData,
-    staff: string, 
-    date: Date
-}
+import { DALoad_AllSlots, DALoad_StaffList, DALoad_StaffWish, WishData, 
+    WishType, WishTypeLabel, MethodList, StaffWishInfo } from '../common/data_accessor';
 
 export default function ShiftGeneratorScreen() {
     const navigation = useNavigation(); 

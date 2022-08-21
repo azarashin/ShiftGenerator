@@ -1,6 +1,11 @@
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export declare type StaffWishInfo = {
+  wish: WishData,
+  staff: string, 
+  date: Date
+}
 
 const storage: Storage = new Storage({
     // 最大容量
